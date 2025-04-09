@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <style>
+    body.light {
+      background-color: #d7a1a1;
+      color: #000000;
+    }
+    body.dark {
+      background-color: #1e1e1e;
+      color: #bc9b9b;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+    button {
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>To-Do List</h1>
+    <form id="todo-form">
+      <input type="text" id="todo-input" placeholder="Add a new task" required />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="todo-list"></ul>
+
+    <p><strong>Tasks added this session:</strong> <span id="session-count">0</span></p>
+
+    <button id="toggle-theme">Toggle Light/Dark Theme</button>
+
+    <h2>Motivational Quote</h2>
+    <p id="quote">Loading...</p>
+  </div>
+
+  <script>
+    // Local storage
+    const todoForm = document.getElementById('todo-form');
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    renderTasks();
+
+    todoForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const task = todoInput.value.trim();
+      if (task) {
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        todoInput.value = '';
+        renderTasks();
+        incrementSessionCount();
+      }
+    });
+
+    function renderTasks() {
+      todoList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.textContent = task;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => {
+          tasks.splice(index, 1);
+          localStorage.setItem('tasks', JSON.stringify(tasks));
+          renderTasks();
+        };
+        li.appendChild(delBtn);
+        todoList.appendChild(li);
+      });
+    }
+
+    // session stotage
+    const sessionCountDisplay = document.getElementById('session-count');
+    let count = Number(sessionStorage.getItem('taskCount')) || 0;
+    sessionCountDisplay.textContent = count;
+
+    function incrementSessionCount() {
+      count += 1;
+      sessionStorage.setItem('taskCount', count);
+      sessionCountDisplay.textContent = count;
+    }
+
+    // Theme
+    const themeToggleBtn = document.getElementById('toggle-theme');
+
+    function setTheme(theme) {
+      document.body.className = theme;
+      document.cookie = `theme=${theme}; path=/; max-age=31536000`; // 1 year
+    }
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      return parts.length === 2 ? parts.pop().split(';').shift() : null;
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.body.className;
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme);
+    });
+
+    const savedTheme = getCookie('theme') || 'light';
+    setTheme(savedTheme);
+
+    // API
+    const quoteEl = document.getElementById('quote');
+
+    async function fetchQuote() {
+      try {
+        const res = await fetch('https://api.quotable.io/random');
+        const data = await res.json();
+        quoteEl.textContent = `"${data.content}" — ${data.author}`;
+      } catch (err) {
+        quoteEl.textContent = 'Could not load quote. Try again later!  :)';
+      }
+    }
+
+    fetchQuote();
+  </script>
+</body>
+</html>

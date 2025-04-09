@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Puzzle</title>
+    <style>
+        /* NOTE: Do NOT modify this stylesheet */
+        #puzzle {
+            width: 500px;
+            height: 500px;
+            border: 5px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h2>DOM Puzzle</h2>
+    <div id='puzzle'></div>
+    <p>This is a puzzle created entirely with JavaScript.</p>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const puzzle = document.getElementById("puzzle");
+            
+            // Border interaction event listeners
+            puzzle.addEventListener("mouseenter", function () {
+                puzzle.style.border = "5px solid red";
+            });
+            puzzle.addEventListener("mouseleave", function () {
+                puzzle.style.border = "5px solid black";
+            });
+            
+            // Create and style the A, B, C, D buttons
+            const colors = ["#9455F4", "#4A2B74", "#594492", "#854DDC"];
+            const labels = ["A", "B", "C", "D"];
+            
+            for (let i = 0; i < 4; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = labels[i];
+                btn.style.width = "125px";
+                btn.style.height = "125px";
+                btn.style.backgroundColor = colors[i];
+                puzzle.appendChild(btn);
+            }
+            
+            // Create 100-button grid
+            const gridContainer = document.createElement("div");
+            gridContainer.style.display = "grid";
+            gridContainer.style.gridTemplateColumns = "repeat(10, 25px)";
+            gridContainer.style.gridGap = "4px";
+            puzzle.appendChild(gridContainer);
+            
+            let buttons = [];
+            for (let i = 0; i < 100; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i + 1;
+                btn.style.width = "25px";
+                btn.style.height = "25px";
+                btn.style.border = "1px solid black";
+                btn.style.backgroundColor = "#C39CFE";
+                gridContainer.appendChild(btn);
+                buttons.push(btn);
+            }
+            
+            // Button click interactions
+            buttons.forEach((btn, index) => {
+                btn.addEventListener("click", function () {
+                    btn.style.backgroundColor = "#4A2574"; // Dark purple
+                    
+                    if (index > 0) {
+                        buttons[index - 1].style.backgroundColor = "#FF9E00"; // Orange
+                    }
+                    if (index < buttons.length - 1) {
+                        buttons[index + 1].style.backgroundColor = "#FF9E00"; // Orange
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

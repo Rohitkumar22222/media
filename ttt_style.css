@@ -1,0 +1,23 @@
+body {
+    background-color: blueviolet;
+    color: antiquewhite;
+
+}
+button.x-mark{
+    font-size: 3rem;
+    
+    color: rgb(238, 58, 30);
+}
+button.o-mark{
+    font-size: 2rem;
+    
+    color: rgb(60, 231, 7);
+}
+button{
+    background-color: aquamarine;
+}
+#resetButton{
+    background-color: rgb(233, 168, 217);
+    border-radius: 9px;
+
+}

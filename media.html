@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Book Collection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      background-color: #007acc;
+      color: white;
+    }
+
+    #media-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .book-item {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 220px;
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .book-item:hover {
+      transform: scale(1.03);
+    }
+
+    .book-item img {
+      width: 100%;
+      height: auto;
+      border-bottom: 1px solid #eee;
+    }
+
+    .book-item h3 {
+      margin: 10px 0 5px;
+      font-size: 1.1em;
+    }
+
+    .book-item p {
+      margin: 4px 0;
+      font-size: 0.95em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Book Collection</h1>
+  <div id="media-container"></div>
+  <script src="media.js"></script>
+</body>
+</html>
